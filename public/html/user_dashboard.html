@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom CSS-->
+    <link href="public/css/user_dashboard.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Custom JS -->
+    <script src="public/js/user_dashboard.js"></script>
+</head>
+<body class="text-light">
+    <div class="container-fluid mt-5">
+        <h2 class="mb-4">User Dashboard</h2>
+
+        <!-- Display alerts here -->
+        <div id="alertsContainer"></div>
+
+        <!-- Parking spaces information card -->
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <div class="details-container">
+                    <h4>Parking Spaces Information</h4>
+                    <p>Total Parking Spaces: <strong><span class="detail" id="totalSpaces"></span></strong></p>
+                    <p>Available Spaces: <strong><span class="detail" id="availableSpaces"></span></strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- User vehicle information and actions card -->
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <!-- Display user vehicle information here -->
+                <span id="userVehicleInfo"></span>
+                <!-- Button to add a vehicle -->
+                <button type="button" id="AddVehicleBtn" class="btn btn-lg btn-success w-100" data-bs-toggle="modal"
+                    data-bs-target="#addVehicleModal">
+                    Add Vehicle
+                </button>
+            </div>
+        </div>
+
+        <!-- Add Vehicle Modal -->
+        <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addVehicleModalLabel">Add Vehicle</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form for adding a vehicle goes here -->
+                        <form id="addVehicleForm">
+                            <div class="mb-3">
+                                <label for="addVehicleType" class="form-label">Vehicle Type</label>
+                                <select class="form-select" id="addVehicleType" name="vehicleType" required>
+                                    <option selected disabled hidden value="">Select the type of the vehicle</option>
+                                    <option value="Bus">Bus</option>
+                                    <option value="Car">Car</option>
+                                    <option value="Motorcycle">Motorcycle</option>
+                                </select>
+                            </div>
+                            <button type="button" id="ConfirmAddVehicle" class="btn btn-success"
+                                onclick="addVehicle()">Add Vehicle</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leave Parking Modal -->
+        <div class="modal fade" id="leaveParkingModal" tabindex="-1" aria-labelledby="leaveParkingModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="leaveParkingModalLabel">Leave Parking</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Display alerts here -->
+                        <div id="priceContainer"></div>
+                        <p>Pricing information for your vehicle:</p>
+                        <!-- Display pricing information based on the user's vehicle type -->
+                        <div id="userVehiclePricingInfo" class="details-container"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Button to calculate and display the price -->
+                        <button type="button" id="CalculateBtn" class="btn btn-primary" onclick="calculateAndDisplayPrice()">Calculate Price</button>
+                        <!-- Placeholder link for payment page  -->
+                        <a href="#" id="proceedToPaymentBtn" class="btn btn-primary invisible"
+                            data-bs-toggle="modal" data-bs-target="#instructionsModal">Proceed to Payment</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Information Card -->
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <div id="allPricingContainer" class="details-container"></div>
+            </div>
+        </div>
+
+        <!-- Instructions Modal -->
+        <div class="modal fade" id="instructionsModal" tabindex="-1" aria-labelledby="instructionsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="instructionsModalLabel">Follow Instructions on the Terminal</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Add instructions here -->
+                        <p>Follow the instructions on the terminal for payment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

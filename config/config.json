@@ -1,0 +1,9 @@
+{
+    "total_parking_spaces": 100,
+    "db": {
+        "host": "localhost",
+        "username": "root",
+        "password" : "",
+        "dbname": "parking_manager"
+    }
+}

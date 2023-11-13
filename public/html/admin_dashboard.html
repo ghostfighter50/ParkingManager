@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom CSS-->
+    <link href="public/css/admin_dashboard.css" rel="stylesheet">
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="public/js/admin_dashboard.js"></script>
+</head>
+
+<body class="text-light">
+    <div class="container-fluid mt-5">
+        <h2 class="mb-4">Admin Dashboard</h2>
+
+        <!-- Display alerts here -->
+        <div id="alertsContainer"></div>
+
+        <div class="admin-card">
+            <div class="card-body">
+                <h5 class="card-title">Admin Actions</h5>
+                <div class="admin-buttons">
+                    <!-- Button trigger modal for managing pricing -->
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#managePricingModal">
+                        <i class="fas fa-money-bill-wave"></i> Manage Vehicle Pricing
+                    </button>
+        
+                    <!-- Button for showing pricings -->
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="showPricings()">
+                        <i class="fas fa-eye"></i> Show Pricings
+                    </button>
+        
+                    <!-- Button for adding a vehicle -->
+                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addVehicleModal">
+                        <i class="fas fa-car"></i> Add Vehicle
+                    </button>
+        
+                    <!-- Button for removing all vehicles -->
+                    <button type="button" id="RemoveAllButton" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#removeAllConfirmationModal">
+                        <i class="fas fa-trash"></i> Remove All Vehicles
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Display total parking spaces and available spaces -->
+        <div class="mt-4 card admin-card">
+            <div class="card-body">
+                <h5>Total Spaces: <span id="totalSpaces"></span></h5>
+                <h5>Available Spaces: <span id="availableSpaces"></span></h5>
+            </div>
+        </div>
+        <div class="mt-4 card admin-card">
+            <div class="card-body">
+                <h5>Search Vehicles by ID</h5>
+                <form id="searchForm">
+                    <div class="mb-3">
+                        <input type="number" class="form-control" id="searchById">
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="searchVehicles()">Search</button>
+                </form>
+            </div>
+        </div>
+        <!-- Table for listing and managing vehicles goes here -->
+        <table class="table table-dark mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Arrival Time</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="vehiclesTableBody">
+                <!-- Populate with vehicles data  -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Vehicle Modal -->
+    <div class="modal fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addVehicleModalLabel">Add Vehicle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for adding a vehicle goes here -->
+                    <form id="addVehicleForm">
+                        <div class="mb-3">
+                            <label for="addVehicleType" class="form-label">Vehicle Type</label>
+                            <select class="form-select" id="addVehicleType" name="vehicleType" required>
+                                <option selected disabled value="">Select the type of the vehicle</option>
+                                <option value="Bus">Bus</option>
+                                <option value="Car">Car</option>
+                                <option value="Motorcycle">Motorcycle</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-success" onclick="addVehicle()">Add Vehicle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Vehicle Modal -->
+    <div class="modal fade" id="editVehicleModal" tabindex="-1" aria-labelledby="editVehicleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editVehicleModalLabel">Edit Vehicle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for editing vehicle goes here -->
+                    <form id="editVehicleForm">
+                        <div class="mb-3">
+                            <label for="editVehicleID" class="form-label">Vehicle ID</label>
+                            <input type="text" class="form-control" id="editVehicleID" name="editVehicleID" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editVehicleType" class="form-label">New Vehicle Type</label>
+                            <select class="form-select" id="editVehicleType" name="editVehicleType" required>
+                                <option value="Bus">Bus</option>
+                                <option value="Car">Car</option>
+                                <option value="Motorcycle">Motorcycle</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="updateVehicleType()">Update Type</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Pricing Modal -->
+    <div class="modal fade" id="managePricingModal" tabindex="-1" aria-labelledby="managePricingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="managePricingModalLabel">Manage Vehicle Pricing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for managing pricing goes here -->
+                    <form id="managePricingForm">
+                        <div class="mb-3">
+                            <label for="managePricingVehicleType" class="form-label">Vehicle Type</label>
+                            <select class="form-select" id="managePricingVehicleType" name="vehicleType" required>
+                                <option selected disabled hidden value="">Select the type of the vehicle</option>
+                                <option value="Bus">Bus</option>
+                                <option value="Car">Car</option>
+                                <option value="Motorcycle">Motorcycle</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPrice" class="form-label">New Price</label>
+                            <input type="number" class="form-control" placeholder="0.00" id="newPrice" name="newPrice" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="updatePricing()">Update Pricing</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show Pricings Modal -->
+    <div class="modal fade" id="showPricingsModal" tabindex="-1" aria-labelledby="showPricingsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="showPricingsModalLabel">Vehicle Pricings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Display pricing information here -->
+                    <div id="pricingData" class="details-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remove All Vehicles Confirmation Modal -->
+    <div class="modal fade" id="removeAllConfirmationModal" tabindex="-1"
+        aria-labelledby="removeAllConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeAllConfirmationModalLabel">Confirm Removal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to remove all vehicles?</p>
+                    <button type="button" class="btn btn-danger" onclick="confirmRemoveAllVehicles()">Yes, Remove All
+                        Vehicles</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

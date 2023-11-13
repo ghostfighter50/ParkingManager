@@ -1,0 +1,90 @@
+body {
+    background: black;
+    color: white;
+    overflow-y: scroll;
+    scrollbar-color: #40464b #606871;
+    scrollbar-width: thin;
+}
+
+body::-webkit-scrollbar {
+    width: 12px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #272727;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+body::-webkit-scrollbar-track {
+    background-color: #343a40;
+}
+#userVehicleInfo{
+    background: black;
+    border-radius: 2%;
+}
+.dashboard-card {
+    background-color: #3e4448;
+    color: white;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.dashboard-card:hover {
+    background-color: #343a40;
+}
+
+.dashboard-card .btn {
+    transition: background-color 0.3s;
+}
+
+.dashboard-card .btn:hover {
+    background-color: #454d55;
+}
+
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-top: 20px;
+}
+
+.table th,
+.table td {
+    border: 1px solid #454d55;
+    padding: 15px;
+    text-align: center;
+}
+
+.table th {
+    background-color: #343a40;
+}
+
+.table tbody tr:hover {
+    background-color: #454d55;
+}
+.details-container {
+    background-color: #1f2122;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.details-container p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.detail {
+    font-weight: bold;
+    color: #ffc107;
+}
+
+.leave-button:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
