@@ -1,6 +1,6 @@
 <?php
 
-require_once('controllers/PricingController.php');
+require_once("controllers/PricingController.php");
 
 /**
  * Class PricingRoutes
@@ -29,12 +29,12 @@ class PricingRoutes {
      */
     public function handleRequest($uri, $method) {
         switch ($uri) {
-            case '/api/pricing':
-                if ($method === 'POST') {
+            case "/api/pricing":
+                if ($method === "POST") {
                     // Handle POST request to change pricing
-                    $data = json_decode(file_get_contents('php://input'), true);
-                    $this->pricingController->changePricing($data['vehicleType'], $data['newPrice']);
-                } elseif ($method === 'GET') {
+                    $data = json_decode(file_get_contents("php://input"), true);
+                    $this->pricingController->changePricing($data["vehicleType"], $data["newPrice"]);
+                } elseif ($method === "GET") {
                     // Handle GET request to fetch pricing information
                     $this->pricingController->getPricing();
                 }

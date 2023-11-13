@@ -1,6 +1,6 @@
 <?php
 
-require_once('controllers/ParkingSpaceController.php');
+require_once("controllers/ParkingSpaceController.php");
 
 /**
  * Class ParkingSpaceRoutes
@@ -30,8 +30,8 @@ class ParkingSpaceRoutes {
     public function handleRequest($uri, $method) {
 
         switch ($uri) {
-            case '/api/spaces':
-                if ($method === 'GET') {
+            case "/api/spaces":
+                if ($method === "GET") {
                     $this->parkingSpaceController->getAllParkingSpaces();
                 }
                 break;

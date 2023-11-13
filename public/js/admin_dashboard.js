@@ -1,23 +1,23 @@
 /**
  * Executes when the DOM content is fully loaded.
  */
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
     /**
      * Fetches and populates vehicles data.
      */
     function fetchVehiclesData() {
         // Fetch vehicles data
-        fetch('/api/vehicles')
+        fetch("/api/vehicles")
             .then(response => response.json())
             .then(data => {
-                const vehiclesTableBody = document.getElementById('vehiclesTableBody');
-                vehiclesTableBody.innerHTML = '';
+                const vehiclesTableBody = document.getElementById("vehiclesTableBody");
+                vehiclesTableBody.innerHTML = "";
 
                 if (data.message) {
                     return vehiclesTableBody.innerHTML = `<tr><td colspan="4">${data.message}</td></tr>`;
                 }
                 if (data.error) {
-                    return showAlert('danger', `Error: ${data.error}`);
+                    return showAlert("danger", `Error: ${data.error}`);
                 }
                 
                 data.forEach(vehicle => {
@@ -42,12 +42,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
         // Fetch spaces data
-        fetch('/api/spaces')
+        fetch("/api/spaces")
             .then(response => response.json())
             .then(data => {
-                const availableSpaces = document.getElementById('availableSpaces');
-                const totalSpaces = document.getElementById('totalSpaces');
-                const removeAllButton = document.getElementById('RemoveAllButton');
+                const availableSpaces = document.getElementById("availableSpaces");
+                const totalSpaces = document.getElementById("totalSpaces");
+                const removeAllButton = document.getElementById("RemoveAllButton");
 
                 availableSpaces.innerHTML = `<span class="detail">${data.AvailableSpaces}</span>`;
                 totalSpaces.innerHTML = `<span class="detail">${data.TotalSpaces}</span>`;
@@ -64,16 +64,16 @@ document.addEventListener('DOMContentLoaded', function () {
      * Searches for vehicles based on the given ID.
      */
     window.searchVehicles = function () {
-        const searchById = document.getElementById('searchById').value;
-        if (searchById === '') return fetchVehiclesData()
+        const searchById = document.getElementById("searchById").value;
+        if (searchById === "") return fetchVehiclesData()
         fetch(`/api/vehicles/${searchById}`)
             .then(response => response.json())
             .then(vehicle => {
                 if (vehicle.error) {
-                    return showAlert('danger', `Error: ${vehicle.error}`);
+                    return showAlert("danger", `Error: ${vehicle.error}`);
                 }
                 if (vehicle.message) {
-                    return showAlert('success', `${vehicle.message}`);
+                    return showAlert("success", `${vehicle.message}`);
                 }
 
                 const row = `
@@ -99,12 +99,12 @@ document.addEventListener('DOMContentLoaded', function () {
      * Adds a new vehicle.
      */
     window.addVehicle = function () {
-        const vehicleType = document.getElementById('addVehicleType').value;
+        const vehicleType = document.getElementById("addVehicleType").value;
 
-        fetch('/api/vehicles', {
-            method: 'POST',
+        fetch("/api/vehicles", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 vehicleType: vehicleType,
@@ -113,12 +113,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    return showAlert('danger', `Error: ${data.error}`);
+                    return showAlert("danger", `Error: ${data.error}`);
                 }
-                showAlert('success', 'Vehicle added successfully!');
+                showAlert("success", "Vehicle added successfully!");
                 fetchVehiclesData();
-                document.getElementById('addVehicleType').value = '';
-                $('#addVehicleModal').modal('hide');
+                document.getElementById("addVehicleType").value = "";
+                $("#addVehicleModal").modal("hide");
             });
     };
 
@@ -126,16 +126,16 @@ document.addEventListener('DOMContentLoaded', function () {
      * Updates the pricing information.
      */
     window.updatePricing = function () {
-        const vehicleType = document.getElementById('managePricingVehicleType').value;
-        const newPrice = document.getElementById('newPrice').value;
+        const vehicleType = document.getElementById("managePricingVehicleType").value;
+        const newPrice = document.getElementById("newPrice").value;
 
-        fetch('/api/pricing', {
-            method: 'POST',
+        fetch("/api/pricing", {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                action: 'change_pricing',
+                action: "change_pricing",
                 vehicleType: vehicleType,
                 newPrice: newPrice,
             }),
@@ -143,12 +143,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    return showAlert('danger', `Error: ${data.error}`);
+                    return showAlert("danger", `Error: ${data.error}`);
                 }
-                $('#managePricingModal').modal('hide');
-                document.getElementById('managePricingVehicleType').value = '';
-                document.getElementById('newPrice').value = '';
-                showAlert('success', 'Pricing updated successfully!');
+                $("#managePricingModal").modal("hide");
+                document.getElementById("managePricingVehicleType").value = "";
+                document.getElementById("newPrice").value = "";
+                showAlert("success", "Pricing updated successfully!");
             });
     };
 
@@ -156,15 +156,15 @@ document.addEventListener('DOMContentLoaded', function () {
      * Shows pricing information.
      */
     window.showPricings = function () {
-        fetch('/api/pricing')
+        fetch("/api/pricing")
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    return showAlert('danger', `Error: ${data.error}`);
+                    return showAlert("danger", `Error: ${data.error}`);
                 }
 
-                const pricingData = document.getElementById('pricingData');
-                pricingData.innerHTML = '';
+                const pricingData = document.getElementById("pricingData");
+                pricingData.innerHTML = "";
                 data.forEach(pricing => {
                     const pricingInfo = `
                         <p><span class="detail">${pricing.vehicle_type}</span></p>
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     `;
                     pricingData.innerHTML += pricingInfo;
                 });
-                $('#showPricingsModal').modal('show');
+                $("#showPricingsModal").modal("show");
             });
     };
 
@@ -181,9 +181,9 @@ document.addEventListener('DOMContentLoaded', function () {
      * Edits a vehicle based on its ID.
      */
     window.editVehicle = function (vehicleID, vehicleType) {
-        // Populate the edit form with the current data
-        document.getElementById('editVehicleID').value = vehicleID;
-        document.getElementById('editVehicleType').value = vehicleType;
+            // Populate the edit form with the current data
+        document.getElementById("editVehicleID").value = vehicleID;
+        document.getElementById("editVehicleType").value = vehicleType;
     };
 
     /**
@@ -191,14 +191,14 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     window.removeVehicle = function (vehicleID) {
         fetch(`/api/vehicles/${vehicleID}`, {
-            method: 'DELETE',
+            method: "DELETE",
         })
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    return showAlert('danger', `Error: ${data.error}`);
+                    return showAlert("danger", `Error: ${data.error}`);
                 }
-                showAlert('success', 'Successfully removed the vehicle');
+                showAlert("success", "Successfully removed the vehicle");
                 fetchVehiclesData();
             });
     };
@@ -207,32 +207,32 @@ document.addEventListener('DOMContentLoaded', function () {
      * Confirms the removal of all vehicles.
      */
     window.confirmRemoveAllVehicles = function () {
-        fetch('/api/vehicles', {
-            method: 'DELETE',
+        fetch("/api/vehicles", {
+            method: "DELETE",
         })
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    return showAlert('danger', `Error: ${data.error}`);
+                    return showAlert("danger", `Error: ${data.error}`);
                 }
-                showAlert('success', 'All vehicles removed successfully!');
+                showAlert("success", "All vehicles removed successfully!");
                 fetchVehiclesData();
             });
 
-        $('#removeAllConfirmationModal').modal('hide');
+        $("#removeAllConfirmationModal").modal("hide");
     };
 
     /**
      * Updates the vehicle type.
      */
     window.updateVehicleType = function () {
-        const vehicleID = document.getElementById('editVehicleID').value;
-        const newVehicleType = document.getElementById('editVehicleType').value;
+        const vehicleID = document.getElementById("editVehicleID").value;
+        const newVehicleType = document.getElementById("editVehicleType").value;
 
         fetch(`/api/vehicles/${vehicleID}`, {
-            method: 'PUT',
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 newVehicleType: newVehicleType,
@@ -241,27 +241,27 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    return showAlert('danger', `Error: ${data.error}`);
+                    return showAlert("danger", `Error: ${data.error}`);
                 }
-                showAlert('success', 'Vehicle type updated successfully!');
+                showAlert("success", "Vehicle type updated successfully!");
                 fetchVehiclesData();
-                $('#editVehicleModal').modal('hide');
+                $("#editVehicleModal").modal("hide");
             });
     };
 
     /**
      * Shows an alert message.
-     * @param {string} type - The type of the alert (e.g., 'success', 'danger').
+     * @param {string} type - The type of the alert (e.g., "success", "danger").
      * @param {string} message - The message to display in the alert.
      */
     function showAlert(type, message) {
-        const alertDiv = document.createElement('div');
+        const alertDiv = document.createElement("div");
         alertDiv.className = `alert alert-${type} alert-dismissible fade show mt-3`;
         alertDiv.innerHTML = `
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             ${message}
         `;
-        document.getElementById('alertsContainer').appendChild(alertDiv);
+        document.getElementById("alertsContainer").appendChild(alertDiv);
 
         // Automatically remove the alert after 3 seconds
         setTimeout(() => {

@@ -32,19 +32,19 @@ class PricingController {
         $types = ["Bus", "Car", "Motorcycle"];
 
         if (empty($newPrice)) {
-            $response['error'] = "Empty new price";
+            $response["error"] = "Empty new price";
             echo json_encode($response);
             return;
         }
 
         if (!in_array($vehicleType, $types)) {
-            $response['error'] = "Wrong vehicle type";
+            $response["error"] = "Wrong vehicle type";
             echo json_encode($response);
             return;
         }
 
         if (!is_numeric($newPrice)) {
-            $response['error'] = "Wrong price data type";
+            $response["error"] = "Wrong price data type";
             echo json_encode($response);
             return;
         }
@@ -53,7 +53,7 @@ class PricingController {
         $stmt = $this->conn->prepare($sql);
 
         if (!$stmt) {
-            $response['error'] = "Prepare statement failed: " . $this->conn->error;
+            $response["error"] = "Prepare statement failed: " . $this->conn->error;
             echo json_encode($response);
             return;
         }
@@ -61,9 +61,9 @@ class PricingController {
         $stmt->bind_param("ds", $newPrice, $vehicleType);
 
         if ($stmt->execute()) {
-            $response['message'] = "Pricing updated successfully";
+            $response["message"] = "Pricing updated successfully";
         } else {
-            $response['error'] = "Error updating pricing: " . $stmt->error;
+            $response["error"] = "Error updating pricing: " . $stmt->error;
         }
 
         $stmt->close();
@@ -85,7 +85,7 @@ class PricingController {
             $pricing = $result->fetch_all(MYSQLI_ASSOC);
             $response = $pricing;
         } else {
-            $response['error'] = 'Error fetching pricing information: ' . $this->conn->error;
+            $response["error"] = "Error fetching pricing information: " . $this->conn->error;
         }
 
         echo json_encode($response);

@@ -38,7 +38,7 @@ class VehicleController {
             echo json_encode($vehicles);
             return $vehicles;
         } else {
-            echo json_encode(['message' => 'No vehicles found']);
+            echo json_encode(["message" => "No vehicles found"]);
         }
     }
 
@@ -55,7 +55,7 @@ class VehicleController {
             $vehicle = $result->fetch_assoc();
             echo json_encode($vehicle);
         } else {
-            echo json_encode(['error' => 'Vehicle not found']);
+            echo json_encode(["error" => "Vehicle not found"]);
         }
     }
 
@@ -105,9 +105,9 @@ class VehicleController {
         $sql = "DELETE FROM vehicles WHERE id = $vehicleID";
 
         if ($this->conn->query($sql) === TRUE) {
-            echo json_encode(['message' => 'Vehicle removed successfully']);
+            echo json_encode(["message" => "Vehicle removed successfully"]);
         } else {
-            echo json_encode(['error' => 'Error removing vehicle: ' . $this->conn->error]);
+            echo json_encode(["error" => "Error removing vehicle: " . $this->conn->error]);
         }
     }
 
@@ -120,9 +120,9 @@ class VehicleController {
         $sql = "DELETE FROM vehicles";
 
         if ($this->conn->query($sql) === TRUE) {
-            echo json_encode(['message' => 'All vehicles removed successfully']);
+            echo json_encode(["message" => "All vehicles removed successfully"]);
         } else {
-            echo json_encode(['error' => 'Error removing all vehicles: ' . $this->conn->error]);
+            echo json_encode(["error" => "Error removing all vehicles: " . $this->conn->error]);
         }
     }
 
@@ -150,9 +150,9 @@ class VehicleController {
         $stmt->bind_param("si", $newType, $vehicleID);
 
         if ($stmt->execute()) {
-            echo json_encode(['message' => 'Vehicle type updated successfully']);
+            echo json_encode(["message" => "Vehicle type updated successfully"]);
         } else {
-            echo json_encode(['error' => 'Error updating vehicle type: ' . $stmt->error]);
+            echo json_encode(["error" => "Error updating vehicle type: " . $stmt->error]);
         }
 
         $stmt->close();

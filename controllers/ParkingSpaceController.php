@@ -26,15 +26,15 @@ class ParkingSpaceController {
      * @returns {object} Parking spaces information.
      */
     public function getAllParkingSpaces() {
-        $totalSpaces = json_decode(file_get_contents('config/config.json'), true)['total_parking_spaces'];
+        $totalSpaces = json_decode(file_get_contents("config/config.json"), true)["total_parking_spaces"];
         $sql = "SELECT COUNT(*) FROM vehicles";
         $result = $this->conn->query($sql);
 
         if ($result->num_rows > 0) {
             $availableSpaces = $totalSpaces -  $result->fetch_row()[0];
-            echo json_encode(['AvailableSpaces' => $availableSpaces, 'TotalSpaces' => $totalSpaces]);
+            echo json_encode(["AvailableSpaces" => $availableSpaces, "TotalSpaces" => $totalSpaces]);
         } else {
-            echo json_encode(['error' => 'Error fetching parking spaces: ' . $this->conn->error]);
+            echo json_encode(["error" => "Error fetching parking spaces: " . $this->conn->error]);
         }
     }
 }

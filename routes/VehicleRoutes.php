@@ -1,7 +1,7 @@
 <?php
 
-require_once('controllers/VehicleController.php');
-require_once('controllers/ParkingSpaceController.php');
+require_once("controllers/VehicleController.php");
+require_once("controllers/ParkingSpaceController.php");
 
 /**
  * Class VehicleRoutes
@@ -33,36 +33,30 @@ class VehicleRoutes {
      */
     public function handleRequest($uri, $method) {
 
-        $vehicleId = null;
-        if (strpos($uri, '/api/vehicles/') === 0) {
-            $vehicleID = str_replace('/api/vehicles/', '', $uri);
+        $vehicleID = null;
+        if (strpos($uri, "/api/vehicles/") === 0) {
+            $vehicleID = str_replace("/api/vehicles/", "", $uri);
         }
 
         switch ($uri) {
-            case '/api/vehicles':
-                if ($method === 'GET') {
-                    return $this->vehicleController->getAllVehicles();
-                } elseif ($method === 'POST') {
-                    $data = json_decode(file_get_contents('php://input'), true);
-                    return $this->vehicleController->addVehicle($data['vehicleType']);
-                } elseif ($method === 'DELETE') {
+            case "/api/vehicles":
+                if ($method === "GET") {
+                    $this->vehicleController->getAllVehicles();
+                } elseif ($method === "POST") {
+                    $data = json_decode(file_get_contents("php://input"), true);
+                    $this->vehicleController->addVehicle($data["vehicleType"]);
+                } elseif ($method === "DELETE") {
                     $this->vehicleController->removeAllVehicles();
                 }
                 break;
-            case '/api/vehicles/' + $vehicleId:
-                if ($method === 'GET') {
-                    return $this->vehicleController->getVehicleById($vehicleID);
-                } elseif ($method === 'PUT') {
-                    $data = json_decode(file_get_contents('php://input'), true);
-                    return $this->vehicleController->changeVehicleType($vehicleId, $data['newVehicleType']);
-                } elseif ($method === 'DELETE') {
-                    return $this->vehicleController->removeVehicle($vehicleId);
-                }
-                break;
-            case '/api/vehicles/search':
-                if ($method === 'POST') {
-                    $data = json_decode(file_get_contents('php://input'), true);
-                    $this->vehicleController->getVehicleById($data['searchById']);
+            case "/api/vehicles/$vehicleID":
+                if ($method === "GET") {
+                    $this->vehicleController->getVehicleById($vehicleID);
+                } elseif ($method === "PUT") {
+                    $data = json_decode(file_get_contents("php://input"), true);
+                    $this->vehicleController->changeVehicleType($vehicleID, $data["newVehicleType"]);
+                } elseif ($method === "DELETE") {
+                    $this->vehicleController->removeVehicle($vehicleID);
                 }
                 break;
         }
