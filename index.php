@@ -22,11 +22,9 @@ require_once('routes/ParkingSpaceRoutes.php');
 $vehicleRoutes = new VehicleRoutes($conn);
 $pricingRoutes = new PricingRoutes($conn);
 $parkingSpaceRoutes = new ParkingSpaceRoutes($conn);
-
 // Retrieve the HTTP method and URI
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
-
 // Routing logic based on the URI
 switch ($uri) {
     case '/':
@@ -41,23 +39,20 @@ switch ($uri) {
         // Admin dashboard page
         require_once('public/html/admin_dashboard.html');
         break;
-    default:
         // Delegate to appropriate route handler for API routes
-        if ($uri === '/api/vehicles') {
-            $vehicleRoutes->handleRequest($uri, $method);
-        } elseif ($uri === '/api/pricing') {
-            $pricingRoutes->handleRequest($uri, $method);
-        } elseif ($uri === '/api/spaces') {
-            $parkingSpaceRoutes->handleRequest($uri, $method);
-        } else {
-            // Redirect to the home page for unknown routes
-            echo http_response_code(301);
-            echo header('Location: /');
-            break;
-        }
+       case '/api/vehicles':
+        $vehicleRoutes->handleRequest($uri, $method);
         break;
-}
+    case '/api/pricing':
+        $pricingRoutes->handleRequest($uri, $method);
+        break;
+    case '/api/spaces':
+        $parkingSpaceRoutes->handleRequest($uri, $method);
+        break;
+    default:
 
+    break;
+}
 // Close the database connection
 $conn->close();
 ?>

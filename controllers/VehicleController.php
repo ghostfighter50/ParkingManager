@@ -51,7 +51,6 @@ class VehicleController {
     public function getVehicleById($vehicleID) {
         $sql = "SELECT * FROM vehicles WHERE id = $vehicleID";
         $result = $this->conn->query($sql);
-
         if ($result->num_rows > 0) {
             $vehicle = $result->fetch_assoc();
             echo json_encode($vehicle);
